@@ -5,7 +5,6 @@ function ProductCard({ product, telegramId }) {
   const [showPickup, setShowPickup] = useState(false);
 
   if (showPickup) {
-    // Если выбран товар → показываем окно самовывоза
     return <PickupSelect product={product} telegramId={telegramId} />;
   }
 
@@ -14,15 +13,14 @@ function ProductCard({ product, telegramId }) {
       <img
         src={product.image || "/placeholder.png"}
         alt={product.name}
-        className="product-image"
+        className="product-img"
       />
       <h3>{product.name}</h3>
       {product.description && <p>{product.description}</p>}
-      <p className="product-price">{product.price} ₽</p>
-
-      <button onClick={() => setShowPickup(true)} className="buy-btn">
-        Выбрать
-      </button>
+      <p>
+        <b>{product.price} ₽</b>
+      </p>
+      <button onClick={() => setShowPickup(true)}>Выбрать</button>
     </div>
   );
 }
