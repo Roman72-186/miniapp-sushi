@@ -4,6 +4,8 @@ import ProductCard from "./ProductCard";
 import About from "./About";
 import Delivery from "./Delivery";
 import "./App.css";
+import ProductCard from "./components/ProductCard";
+import PickupSelect from "./components/PickupSelect";
 
 function App() {
   const [page, setPage] = useState("menu");

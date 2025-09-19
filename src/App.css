@@ -203,3 +203,32 @@ button:hover {
     opacity: 1;
   }
 }
+
+.pickup-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.pickup-list {
+  list-style: none;
+  padding: 0;
+}
+
+.pickup-list li {
+  margin: 10px 0;
+}
+
+.confirm-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirm-btn:hover {
+  background: #d32f2f;
+}
