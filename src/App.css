@@ -232,3 +232,37 @@ button:hover {
 .confirm-btn:hover {
   background: #d32f2f;
 }
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  margin: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.buy-btn {
+  padding: 10px 20px;
+  background: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.buy-btn:hover {
+  background: #e64a19;
+}
