@@ -4,23 +4,27 @@ import PickupSelect from "./PickupSelect";
 function ProductCard({ product, telegramId }) {
   const [showPickup, setShowPickup] = useState(false);
 
-  if (showPickup) {
-    return <PickupSelect product={product} telegramId={telegramId} />;
-  }
+  const handleOrderClick = () => {
+    setShowPickup(true); // открываем окно выбора самовывоза
+  };
 
   return (
     <div className="product-card">
-      <img
-        src={product.image || "/placeholder.png"}
-        alt={product.name}
-        className="product-img"
-      />
+      <img src={product.image} alt={product.name} className="product-img" />
       <h3>{product.name}</h3>
-      {product.description && <p>{product.description}</p>}
+      <p>{product.description || ""}</p>
       <p>
         <b>{product.price} ₽</b>
       </p>
-      <button onClick={() => setShowPickup(true)}>Выбрать</button>
+      <button onClick={handleOrderClick}>Заказать</button>
+
+      {showPickup && (
+        <PickupSelect
+          product={product}
+          telegramId={telegramId}
+          onClose={() => setShowPickup(false)}
+        />
+      )}
     </div>
   );
 }

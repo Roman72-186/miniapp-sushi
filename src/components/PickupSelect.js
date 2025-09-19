@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
-function PickupSelect({ product, telegramId }) {
-  const [selectedPickup, setSelectedPickup] = useState(null);
+function PickupSelect({ product, telegramId, onClose }) {
+  const [pickupPoint, setPickupPoint] = useState("");
 
   const pickupPoints = [
-    { id: 1, address: "г. Калининград, ул. Ю. Гагарина, д. 16Б" },
-    { id: 2, address: "г. Калининград, ул. Согласия, д. 46" },
-    { id: 3, address: "г. Калининград, ул. Автомобильная, д. 125" }
+    "г. Калининград, ул. Ленина, 10",
+    "г. Калининград, ул. Победы, 25",
+    "г. Калининград, ул. Советская, 100"
   ];
 
   const handleConfirm = async () => {
-    if (!selectedPickup) {
-      alert("❌ Выберите пункт самовывоза!");
+    if (!pickupPoint) {
+      alert("Пожалуйста, выберите пункт самовывоза");
       return;
     }
 
@@ -20,7 +20,7 @@ function PickupSelect({ product, telegramId }) {
       product_id: product.id,
       product_name: product.name,
       price: product.price,
-      pickup_point: pickupPoints.find(p => p.id === selectedPickup).address
+      pickup_point: pickupPoint
     };
 
     try {
@@ -33,11 +33,16 @@ function PickupSelect({ product, telegramId }) {
       const result = await response.json();
 
       if (result.status === "ok") {
-        alert(`✅ Заказ подтвержден\n${product.name}\n${payload.pickup_point}`);
-
-        // Закрываем мини-апп после подтверждения
         if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.close();
+          window.Telegram.WebApp.showAlert(
+            `✅ Заказ получен: ${product.name}\nСамовывоз: ${pickupPoint}`,
+            () => {
+              window.Telegram.WebApp.close();
+            }
+          );
+        } else {
+          alert(`✅ Заказ получен: ${product.name}\nСамовывоз: ${pickupPoint}`);
+          onClose();
         }
       } else {
         alert("❌ Ошибка: не удалось отправить заказ");
@@ -49,30 +54,26 @@ function PickupSelect({ product, telegramId }) {
   };
 
   return (
-    <div className="pickup-container">
-      <h3>Выберите пункт самовывоза:</h3>
-      <ul className="pickup-list">
-        {pickupPoints.map((point) => (
-          <li key={point.id}>
+    <div className="pickup-modal">
+      <h3>Выберите пункт самовывоза</h3>
+      <ul>
+        {pickupPoints.map((point, index) => (
+          <li key={index}>
             <label>
               <input
                 type="radio"
                 name="pickup"
-                value={point.id}
-                checked={selectedPickup === point.id}
-                onChange={() => setSelectedPickup(point.id)}
+                value={point}
+                checked={pickupPoint === point}
+                onChange={(e) => setPickupPoint(e.target.value)}
               />
-              {point.address}
+              {point}
             </label>
           </li>
         ))}
       </ul>
-
-      {selectedPickup && (
-        <button onClick={handleConfirm} className="confirm-btn">
-          Подтвердить
-        </button>
-      )}
+      <button onClick={handleConfirm}>Подтвердить</button>
+      <button onClick={onClose}>Отмена</button>
     </div>
   );
 }
