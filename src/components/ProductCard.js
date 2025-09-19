@@ -1,30 +1,13 @@
-import React, { useState } from "react";
-import PickupSelect from "./PickupSelect";
+import React from "react";
 
-function ProductCard({ product, telegramId }) {
-  const [showPickup, setShowPickup] = useState(false);
-
-  const handleOrderClick = () => {
-    setShowPickup(true); // открываем окно выбора самовывоза
-  };
-
+function ProductCard({ product, onOrder }) {
   return (
     <div className="product-card">
       <img src={product.image} alt={product.name} className="product-img" />
       <h3>{product.name}</h3>
-      <p>{product.description || ""}</p>
-      <p>
-        <b>{product.price} ₽</b>
-      </p>
-      <button onClick={handleOrderClick}>Заказать</button>
-
-      {showPickup && (
-        <PickupSelect
-          product={product}
-          telegramId={telegramId}
-          onClose={() => setShowPickup(false)}
-        />
-      )}
+      {product.description && <p>{product.description}</p>}
+      <p><b>{product.price} ₽</b></p>
+      <button onClick={onOrder}>Заказать</button>
     </div>
   );
 }

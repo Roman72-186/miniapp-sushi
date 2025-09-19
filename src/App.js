@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { products } from "./data";
-import ProductCard from "./ProductCard";
 import About from "./About";
 import Delivery from "./Delivery";
 import "./App.css";
@@ -11,6 +10,9 @@ function App() {
   const [page, setPage] = useState("menu");
   const queryParams = new URLSearchParams(window.location.search);
   const telegramId = queryParams.get("telegram_id");
+
+  // Состояние для выбора товара и показа модалки
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -42,7 +44,12 @@ function App() {
           )}
           <div className="products-grid">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} telegramId={telegramId} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                telegramId={telegramId}
+                onOrder={() => setSelectedProduct(product)} // 👉 при заказе открываем модалку
+              />
             ))}
           </div>
         </>
@@ -50,6 +57,15 @@ function App() {
 
       {page === "about" && <About />}
       {page === "delivery" && <Delivery />}
+
+      {/* Модалка выбора самовывоза */}
+      {selectedProduct && (
+        <PickupSelect
+          product={selectedProduct}
+          telegramId={telegramId}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
 
       <footer className="footer">
         <img src="/logo.jpg" alt="Sushi House" className="footer-logo" />
