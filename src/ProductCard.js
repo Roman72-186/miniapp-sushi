@@ -9,26 +9,26 @@ function ProductCard({ product, telegramId, setPage, setLastProductName }) {
       price: product.price
     };
 
+    // Логируем отправку
+    console.log("Отправка заказа:", payload);
+
     try {
-      const response = await fetch("/api/order", {
+      // Запускаем отправку на сервер, но не ждём результата
+      fetch("/api/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      });
+      })
+        .then(res => console.log("Ответ сервера:", res.status))
+        .catch(err => console.error("Ошибка при отправке:", err));
 
-      const result = await response.json();
-
-      if (result.status === "ok") {
-        // сразу показываем страницу благодарности
-        setLastProductName(product.name);
-        setPage("thanks");
-      } else {
-        alert("❌ Не удалось отправить заказ");
-      }
     } catch (error) {
-      alert("❌ Ошибка при отправке заказа");
-      console.error(error);
+      console.error("Ошибка при формировании запроса:", error);
     }
+
+    // Сразу переводим на страницу благодарности
+    setLastProductName(product.name);
+    setPage("thanks");
   };
 
   return (
