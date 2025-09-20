@@ -7,6 +7,7 @@ import "./App.css";
 
 function App() {
   const [page, setPage] = useState("menu");
+  const [lastProductName, setLastProductName] = useState(null);
   const queryParams = new URLSearchParams(window.location.search);
   const telegramId = queryParams.get("telegram_id");
 
@@ -25,11 +26,13 @@ function App() {
         </span>
       </div>
 
-      <nav className="nav">
-        <button onClick={() => setPage("menu")}>Меню</button>
-        <button onClick={() => setPage("about")}>О компании</button>
-        <button onClick={() => setPage("delivery")}>Доставка и оплата</button>
-      </nav>
+      {page !== "thanks" && (
+        <nav className="nav">
+          <button onClick={() => setPage("menu")}>Меню</button>
+          <button onClick={() => setPage("about")}>О компании</button>
+          <button onClick={() => setPage("delivery")}>Доставка и оплата</button>
+        </nav>
+      )}
 
       {page === "menu" && (
         <>
@@ -40,7 +43,13 @@ function App() {
           )}
           <div className="products-grid">
             {products.map((product) => (
-              <ProductCard key={product.id} product={product} telegramId={telegramId} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                telegramId={telegramId}
+                setPage={setPage}
+                setLastProductName={setLastProductName}
+              />
             ))}
           </div>
         </>
@@ -48,6 +57,22 @@ function App() {
 
       {page === "about" && <About />}
       {page === "delivery" && <Delivery />}
+
+      {page === "thanks" && (
+        <div className="thanks-screen">
+          <h2>🎉 Спасибо за заказ!</h2>
+          <p>Мы уже готовим {lastProductName}.</p>
+          <p>Скоро свяжемся с вами для подтверждения.</p>
+          {window.Telegram && window.Telegram.WebApp && (
+            <button
+              onClick={() => window.Telegram.WebApp.close()}
+              className="close-btn"
+            >
+              Закрыть приложение
+            </button>
+          )}
+        </div>
+      )}
 
       <footer className="footer">
         <img src="/logo.jpg" alt="Sushi House" className="footer-logo" />

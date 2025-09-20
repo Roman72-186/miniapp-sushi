@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProductCard({ product, telegramId }) {
+function ProductCard({ product, telegramId, setPage, setLastProductName }) {
   const handleOrder = async () => {
     const payload = {
       telegram_id: telegramId,
@@ -19,26 +19,9 @@ function ProductCard({ product, telegramId }) {
       const result = await response.json();
 
       if (result.status === "ok") {
-        if (window.Telegram && window.Telegram.WebApp) {
-          // Показываем popup с кнопкой ОК
-          window.Telegram.WebApp.showPopup(
-            {
-              title: "Заказ оформлен",
-              message: `✅ ${product.name} принят`,
-              buttons: [
-                { id: "ok", type: "default", text: "ОК" }
-              ]
-            },
-            (buttonId) => {
-              if (buttonId === "ok") {
-                window.Telegram.WebApp.close();
-              }
-            }
-          );
-        } else {
-          alert(`✅ Заказ получен: ${product.name}`);
-          window.close();
-        }
+        // Переводим пользователя на страницу "Спасибо"
+        setLastProductName(product.name);
+        setPage("thanks");
       } else {
         if (window.Telegram && window.Telegram.WebApp) {
           window.Telegram.WebApp.showPopup({
