@@ -26,6 +26,7 @@ function App() {
         </span>
       </div>
 
+      {/* Меню показываем только если не страница благодарности */}
       {page !== "thanks" && (
         <nav className="nav">
           <button onClick={() => setPage("menu")}>Меню</button>
@@ -59,14 +60,22 @@ function App() {
       {page === "delivery" && <Delivery />}
 
       {page === "thanks" && (
-        <div className="thanks-screen">
+        <div className="thanks-screen" style={{ textAlign: "center", marginTop: "50px" }}>
           <h2>🎉 Спасибо за заказ!</h2>
-          <p>Мы уже готовим {lastProductName}.</p>
+          <p>Мы уже готовим <b>{lastProductName}</b>.</p>
           <p>Скоро свяжемся с вами для подтверждения.</p>
           {window.Telegram && window.Telegram.WebApp && (
             <button
               onClick={() => window.Telegram.WebApp.close()}
-              className="close-btn"
+              style={{
+                marginTop: "20px",
+                padding: "10px 20px",
+                borderRadius: "8px",
+                backgroundColor: "#2ecc71",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer"
+              }}
             >
               Закрыть приложение
             </button>

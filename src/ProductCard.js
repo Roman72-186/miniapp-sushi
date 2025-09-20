@@ -19,30 +19,14 @@ function ProductCard({ product, telegramId, setPage, setLastProductName }) {
       const result = await response.json();
 
       if (result.status === "ok") {
-        // Переводим пользователя на страницу "Спасибо"
+        // переводим на страницу благодарности
         setLastProductName(product.name);
         setPage("thanks");
       } else {
-        if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.showPopup({
-            title: "Ошибка",
-            message: "❌ Не удалось отправить заказ",
-            buttons: [{ id: "ok", type: "default", text: "ОК" }]
-          });
-        } else {
-          alert("❌ Ошибка: не удалось отправить заказ");
-        }
+        alert("❌ Не удалось отправить заказ");
       }
     } catch (error) {
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.showPopup({
-          title: "Ошибка",
-          message: "❌ Ошибка при отправке заказа",
-          buttons: [{ id: "ok", type: "default", text: "ОК" }]
-        });
-      } else {
-        alert("❌ Ошибка при отправке заказа");
-      }
+      alert("❌ Ошибка при отправке заказа");
       console.error(error);
     }
   };
