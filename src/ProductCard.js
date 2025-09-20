@@ -19,13 +19,17 @@ function ProductCard({ product, telegramId }) {
       const result = await response.json();
 
       if (result.status === "ok") {
-        // Показываем нативный alert в Telegram с кнопкой "Хорошо"
         if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.showAlert(
-            `✅ Заказ получен: ${product.name}`,
-            () => {
-              // Закрываем мини-апп после подтверждения пользователем
-              window.Telegram.WebApp.close();
+          window.Telegram.WebApp.showPopup(
+            {
+              title: "Заказ оформлен",
+              message: `✅ ${product.name}`,
+              buttons: [{ id: "ok", type: "ok" }]
+            },
+            (buttonId) => {
+              if (buttonId === "ok") {
+                window.Telegram.WebApp.close();
+              }
             }
           );
         } else {
@@ -33,14 +37,22 @@ function ProductCard({ product, telegramId }) {
         }
       } else {
         if (window.Telegram && window.Telegram.WebApp) {
-          window.Telegram.WebApp.showAlert("❌ Ошибка: не удалось отправить заказ");
+          window.Telegram.WebApp.showPopup({
+            title: "Ошибка",
+            message: "❌ Не удалось отправить заказ",
+            buttons: [{ id: "ok", type: "ok" }]
+          });
         } else {
           alert("❌ Ошибка: не удалось отправить заказ");
         }
       }
     } catch (error) {
       if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.showAlert("❌ Ошибка при отправке заказа");
+        window.Telegram.WebApp.showPopup({
+          title: "Ошибка",
+          message: "❌ Ошибка при отправке заказа",
+          buttons: [{ id: "ok", type: "ok" }]
+        });
       } else {
         alert("❌ Ошибка при отправке заказа");
       }
