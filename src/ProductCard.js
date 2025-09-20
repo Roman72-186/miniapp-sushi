@@ -19,7 +19,7 @@ function ProductCard({ product, telegramId, setPage, setLastProductName }) {
       const result = await response.json();
 
       if (result.status === "ok") {
-        // переводим на страницу благодарности
+        // сразу показываем страницу благодарности
         setLastProductName(product.name);
         setPage("thanks");
       } else {
