@@ -20,11 +20,12 @@ function ProductCard({ product, telegramId }) {
 
       if (result.status === "ok") {
         if (window.Telegram && window.Telegram.WebApp) {
+          // показываем попап и закрываем только после нажатия кнопки
           window.Telegram.WebApp.showPopup(
             {
               title: "Заказ оформлен",
               message: `✅ ${product.name}`,
-              buttons: [{ id: "ok", type: "ok" }]
+              buttons: [{ id: "ok", type: "ok", text: "ОК" }]
             },
             (buttonId) => {
               if (buttonId === "ok") {
@@ -34,13 +35,15 @@ function ProductCard({ product, telegramId }) {
           );
         } else {
           alert(`✅ Заказ получен: ${product.name}`);
+          // для веб-версии просто закроем вкладку
+          window.close();
         }
       } else {
         if (window.Telegram && window.Telegram.WebApp) {
           window.Telegram.WebApp.showPopup({
             title: "Ошибка",
             message: "❌ Не удалось отправить заказ",
-            buttons: [{ id: "ok", type: "ok" }]
+            buttons: [{ id: "ok", type: "ok", text: "ОК" }]
           });
         } else {
           alert("❌ Ошибка: не удалось отправить заказ");
@@ -51,7 +54,7 @@ function ProductCard({ product, telegramId }) {
         window.Telegram.WebApp.showPopup({
           title: "Ошибка",
           message: "❌ Ошибка при отправке заказа",
-          buttons: [{ id: "ok", type: "ok" }]
+          buttons: [{ id: "ok", type: "ok", text: "ОК" }]
         });
       } else {
         alert("❌ Ошибка при отправке заказа");
